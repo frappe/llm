@@ -7,8 +7,8 @@ from textwrap import dedent
 import click
 import frappe
 
-from otto.llm.types import SessionStats
-from otto.llm.utils import get_key
+from llm.core.types import SessionStats
+from llm.core.utils import get_key
 
 # Model to use for testing
 TEST_MODEL = "openai/gpt-5-nano"  # current cheapest model
@@ -46,7 +46,7 @@ def can_run_llm_tests():
 	key, value = get_key("OpenAI")
 	if key is None or value is None:
 		click.secho(
-			"LLM tests enabled but API keys for OpenAI are needed to run. Set OPENAI_API_KEY as an envvar or in Otto Settings.",
+			"LLM tests enabled but API keys for OpenAI are needed to run. Set OPENAI_API_KEY as an envvar or in LLM Settings.",
 			fg="red",
 		)
 		return False
@@ -56,7 +56,7 @@ def can_run_llm_tests():
 
 def get_testfile_path(file_name: str):
 	return os.path.join(
-		frappe.get_app_path("otto"),
+		frappe.get_app_path("llm"),
 		"llm",
 		"test_llm",
 		file_name,

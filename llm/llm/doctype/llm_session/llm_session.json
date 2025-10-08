@@ -1,0 +1,157 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2025-04-29 21:03:19.454876",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "uid",
+  "first",
+  "column_break_rygp",
+  "is_active",
+  "reason",
+  "section_break_excj",
+  "items",
+  "config_tab",
+  "task_section",
+  "llm",
+  "column_break_rcey",
+  "reasoning_effort",
+  "section_break_wtuc",
+  "tools",
+  "section_break_ohyi",
+  "instruction"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_excj",
+   "fieldtype": "Section Break",
+   "label": "Session"
+  },
+  {
+   "description": "Last LLM used for this session.",
+   "fieldname": "llm",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "LLM",
+   "options": "LLM Model",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "description": "Fetched from Task definition if not specified.",
+   "fieldname": "task_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "Instruction used for this session.",
+   "fieldname": "instruction",
+   "fieldtype": "Code",
+   "label": "Instruction",
+   "read_only": 1
+  },
+  {
+   "default": "None",
+   "description": "Reasoning effort used, applicable only if a reasoning LLM was used.",
+   "fieldname": "reasoning_effort",
+   "fieldtype": "Select",
+   "label": "Reasoning Effort",
+   "options": "None\nLow\nMedium\nHigh",
+   "read_only": 1
+  },
+  {
+   "description": "Sequence of items in the session. Not all items may be part of the active sequence. This might happen if a session was resumed from a non-last item.",
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "LLM Session Item CT"
+  },
+  {
+   "description": "Session UID, used internally may not be unique.",
+   "fieldname": "uid",
+   "fieldtype": "Data",
+   "label": "UID",
+   "read_only": 1
+  },
+  {
+   "description": "ID of the first item in the session.",
+   "fieldname": "first",
+   "fieldtype": "Data",
+   "label": "First",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_rygp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Will be true if waiting on an LLM response, Tool result, etc. Not waiting for user input.",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Is Active"
+  },
+  {
+   "depends_on": "eval: doc.reason",
+   "description": "Will be set if last request failed. Can still be resumed.",
+   "fieldname": "reason",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Reason",
+   "read_only": 1
+  },
+  {
+   "fieldname": "config_tab",
+   "fieldtype": "Tab Break",
+   "label": "Config"
+  },
+  {
+   "fieldname": "column_break_rcey",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ohyi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_wtuc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "Schemas of tools that are available to this session. Can be updated mid session.",
+   "fieldname": "tools",
+   "fieldtype": "Table",
+   "label": "Tools",
+   "options": "LLM Session Tool CT"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-10-06 17:37:21.267114",
+ "modified_by": "Administrator",
+ "module": "LLM",
+ "name": "LLM Session",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

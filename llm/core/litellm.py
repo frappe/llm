@@ -21,9 +21,9 @@ import threading
 import time
 from typing import TYPE_CHECKING, Any, NamedTuple, cast
 
-import otto
-from otto.llm.format import get_messages
-from otto.llm.types import (
+import llm.internal as internal
+from llm.core.format import get_messages
+from llm.core.types import (
 	Content,
 	ContentChunk,
 	InteractReturn,
@@ -35,7 +35,7 @@ from otto.llm.types import (
 	ThinkingContent,
 	ToolUseContent,
 )
-from otto.llm.utils import (
+from llm.core.utils import (
 	DEFAULT_MODEL,
 	DEFAULT_REASONING_BUDGET_MAP,
 	MAX_RETRIES,
@@ -56,7 +56,7 @@ if TYPE_CHECKING:
 	from litellm.types.utils import ModelResponseStream
 
 
-logger = otto.logger("otto.llm.litellm", "ERROR")
+logger = internal.logger("llm.core.litellm", "ERROR")
 
 
 class StreamReturn(NamedTuple):
@@ -336,7 +336,7 @@ def _completions(**kwargs):
 				"request would exceed the rate limit" not in str(e) and "Overloaded" not in str(e)
 			):
 				e.add_note("number of retries: " + str(retries))
-				otto.log_error("litellm_completion error", model=kwargs.get("model"))
+				internal.log_error("litellm_completion error", model=kwargs.get("model"))
 				raise e
 
 			# Anthropic rate limit is set on a per minute basis

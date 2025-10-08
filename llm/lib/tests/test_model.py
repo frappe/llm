@@ -5,10 +5,10 @@ from unittest.mock import patch
 
 import frappe
 
-import otto.lib.model as model
-from otto.lib.tests.utils import delete_sessions, print_stats
-from otto.lib.types import Provider
-from otto.llm.test_llm.utils import skip_unless_can_run_llm_tests
+import llm.lib.model as model
+from llm.core.test_llm.utils import skip_unless_can_run_llm_tests
+from llm.lib.tests.utils import delete_sessions, print_stats
+from llm.lib.types import Provider
 
 
 def mock_get_key(provider: Provider) -> tuple[str | None, str | None]:
@@ -21,7 +21,7 @@ def mock_get_key(provider: Provider) -> tuple[str | None, str | None]:
 	return provider_keys.get(provider, (None, None))
 
 
-@patch("otto.llm.utils.get_key", side_effect=mock_get_key)
+@patch("llm.core.utils.get_key", side_effect=mock_get_key)
 class TestModelAvailability(unittest.TestCase):
 	"""Test model and provider availability checks."""
 
@@ -62,7 +62,7 @@ class TestModelAvailability(unittest.TestCase):
 		self.assertTrue(model.is_provider_available("Google"))
 
 
-@patch("otto.llm.utils.get_key", side_effect=mock_get_key)
+@patch("llm.core.utils.get_key", side_effect=mock_get_key)
 class TestModelRetrieval(unittest.TestCase):
 	"""Test model filtering and retrieval functions."""
 
@@ -121,7 +121,7 @@ class TestAPIKeyManagement(unittest.TestCase):
 		"""Test setting API key for valid provider."""
 		model.set_api_key("OpenAI", "test-key-value")
 		mock_set_value.assert_called_once_with(
-			"Otto Settings", "Otto Settings", "openai_api_key", "test-key-value"
+			"LLM Settings", "LLM Settings", "openai_api_key", "test-key-value"
 		)
 
 	@patch("frappe.set_value")
@@ -148,8 +148,8 @@ class TestModelCreationAndUsage(unittest.TestCase):
 	def delete_model_if_exists(self, model_name: str) -> None:
 		"""Delete a model if it exists, suppressing any errors."""
 		try:
-			if frappe.db.exists("Otto LLM", model_name):
-				frappe.delete_doc("Otto LLM", model_name, force=True)
+			if frappe.db.exists("LLM LLM", model_name):
+				frappe.delete_doc("LLM LLM", model_name, force=True)
 				frappe.db.commit()
 		except Exception:
 			# Suppress any errors during deletion
@@ -162,7 +162,7 @@ class TestModelCreationAndUsage(unittest.TestCase):
 
 		for model_name in self.created_models:
 			with contextlib.suppress(Exception):
-				frappe.delete_doc("Otto LLM", model_name, force=True)
+				frappe.delete_doc("LLM LLM", model_name, force=True)
 
 		frappe.db.commit()
 
@@ -189,7 +189,7 @@ class TestModelCreationAndUsage(unittest.TestCase):
 		self.assertIn(model_name, available_models)
 
 		# Use the created model for a simple task
-		import otto.lib as lib
+		import llm.lib as lib
 
 		test_session = lib.new(
 			model=model_name, instruction="You are a helpful assistant. Respond concisely."
@@ -278,7 +278,7 @@ class TestModelCreationAndUsage(unittest.TestCase):
 		self.created_models.append(model_name)
 
 		# Verify model exists and has correct properties
-		model_doc = frappe.get_doc("Otto LLM", model_name)
+		model_doc = frappe.get_doc("LLM LLM", model_name)
 		self.assertEqual(model_doc.get("title"), "Test Model Properties")
 		self.assertEqual(model_doc.get("provider"), "OpenAI")
 		self.assertEqual(model_doc.get("size"), "Medium")

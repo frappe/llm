@@ -5,8 +5,8 @@ from contextlib import suppress
 
 import frappe
 
-from otto import utils
-from otto.lib.types import FileContent, ImageContent, TextContent, ToolUseContent
+from llm.internal import utils
+from llm.lib.types import FileContent, ImageContent, TextContent, ToolUseContent
 
 
 class content:
@@ -15,8 +15,8 @@ class content:
 
 	Examples:
 	```python
-	from otto.lib import content
-	from otto.lib import quick_query
+	from llm import content
+	from llm import quick_query
 
 	# Create a list of user content objects
 	user_content = [
@@ -99,7 +99,7 @@ def get_tool_use(session_id: str, tool_use_id: str) -> ToolUseContent | None:
 			jt.end_time,
 			jt.stdout,
 			jt.stderr
-		FROM `tabOtto Session Item CT` osi,
+		FROM `tabLLM Session Item CT` osi,
 		JSON_TABLE(
 			osi.content, '$[*]' COLUMNS(
 				id TEXT PATH '$.id',

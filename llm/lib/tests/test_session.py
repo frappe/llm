@@ -1,16 +1,16 @@
 import unittest
 from typing import cast
 
-from otto.lib.session import Session, quick_query
-from otto.lib.tests.utils import delete_sessions, print_stats
-from otto.llm.test_llm.utils import (
+from llm.core.test_llm.utils import (
 	TEST_MODEL,
 	get_testfile_path,
 	get_weather_tool,
 	skip_unless_can_run_llm_tests,
 )
-from otto.llm.types import ToolSchema, ToolUseUpdate
-from otto.llm.utils import to_content
+from llm.core.types import ToolSchema, ToolUseUpdate
+from llm.core.utils import to_content
+from llm.lib.session import Session, quick_query
+from llm.lib.tests.utils import delete_sessions, print_stats
 
 # Convert get_weather_tool to ToolSchema format
 weather_tool_schema: ToolSchema = cast("ToolSchema", get_weather_tool["function"])
@@ -22,7 +22,7 @@ TEST_INSTRUCTION = (
 
 class TestSession(unittest.TestCase):
 	"""
-	Tests for the Session library wrapper around OttoSession.
+	Tests for the Session library wrapper around LLMSession.
 
 	Tests marked with @skip_unless_can_run_llm_tests require:
 	- Network connectivity to the LLM provider

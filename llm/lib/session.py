@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from typing import Literal, cast, overload
 
-import otto
-from otto.lib.errors import InteractionError
-from otto.lib.types import (
+import llm.internal as internal
+from llm.core import utils
+from llm.internal.utils import drain
+from llm.lib.errors import InteractionError
+from llm.lib.types import (
 	Content,
 	ContentChunk,
 	InteractResponse,
@@ -17,9 +19,7 @@ from otto.lib.types import (
 	ToolUseContent,
 	ToolUseUpdate,
 )
-from otto.llm import utils
-from otto.otto.doctype.otto_session.otto_session import OttoSession, SessionInteractStream
-from otto.utils import drain
+from llm.llm.doctype.llm_session.llm_session import LLMSession, SessionInteractStream
 
 __all__ = [
 	"Session",
@@ -30,7 +30,7 @@ __all__ = [
 
 
 class Session:
-	"""High-level wrapper for the `OttoSession` DocType.
+	"""High-level wrapper for the `LLMSession` DocType.
 
 	This class provides a simplified interface for managing and interacting with
 	an LLM session. It handles the underlying database document operations,
@@ -41,7 +41,7 @@ class Session:
 	to resume an existing one.
 	"""
 
-	_session: OttoSession
+	_session: LLMSession
 
 	@staticmethod
 	def new(
@@ -53,7 +53,7 @@ class Session:
 		# See session.new for details
 		manager = Session()
 
-		manager._session = OttoSession.new(
+		manager._session = LLMSession.new(
 			model=model,
 			instruction=instruction,
 			reasoning_effort=reasoning_effort,
@@ -65,7 +65,7 @@ class Session:
 	def load(id: str) -> Session:
 		# See session.load for details
 		manager = Session()
-		manager._session = otto.get(OttoSession, id)
+		manager._session = internal.get(LLMSession, id)
 		return manager
 
 	@property

@@ -4,7 +4,7 @@ import json
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-	from otto.llm.types import SessionItem
+	from llm.core.types import SessionItem
 
 
 class C:
@@ -65,7 +65,7 @@ def get_messages(
 	preserve_thinking: bool = False,
 ):
 	"""
-		Converts from Otto internal format, i.e. SessionItem, to OpenAI Chat
+		Converts from LLM internal format, i.e. SessionItem, to OpenAI Chat
 	Completion format. LiteLLM makes use of OpenAI Chat Completion format.
 
 	Reference: https://platform.openai.com/docs/api-reference/chat/create

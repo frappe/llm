@@ -2,9 +2,9 @@ from typing import Any
 
 import frappe
 
-from otto.lib.types import ModelSize, Provider
-from otto.llm import utils
-from otto.utils import cache
+from llm.core import utils
+from llm.internal.utils import cache
+from llm.lib.types import ModelSize, Provider
 
 __all__ = [
 	"create_model",
@@ -26,14 +26,14 @@ def set_api_key(provider: Provider, value: str) -> None:
 	if (key := utils.get_provider_key(provider)) is None:
 		return
 
-	frappe.set_value("Otto Settings", "Otto Settings", key.lower(), value)
+	frappe.set_value("LLM Settings", "LLM Settings", key.lower(), value)
 
 
 @cache(ttl=60)
 def is_model_available(model: str, exact: bool = True) -> bool:
-	"""Checks if a given model name is available in Otto LLM.
+	"""Checks if a given model name is available in LLM Model.
 
-	This function checks if a model exists and is enabled in the Otto LLM system.
+	This function checks if a model exists and is enabled in the LLM Model system.
 	The check can be done either with exact matching or partial name matching.
 
 	Args:
@@ -45,7 +45,7 @@ def is_model_available(model: str, exact: bool = True) -> bool:
 		True if the model exists and is enabled, False otherwise.
 	"""
 	if (
-		frappe.db.exists({"doctype": "Otto LLM", "name": model, "enabled": True})
+		frappe.db.exists({"doctype": "LLM Model", "name": model, "enabled": True})
 		and (provider := utils.get_provider(model))
 		and is_provider_available(provider)
 	):
@@ -54,7 +54,7 @@ def is_model_available(model: str, exact: bool = True) -> bool:
 	if exact or not model:
 		return False
 
-	for res in frappe.get_all("Otto LLM", filters={"enabled": True}, fields=["name", "title"]):
+	for res in frappe.get_all("LLM Model", filters={"enabled": True}, fields=["name", "title"]):
 		assert isinstance(res.name, str) and isinstance(res.title, str), "sanity check"
 		if (
 			(model.lower() in res.name.lower() or model.lower() in res.title.lower())
@@ -88,7 +88,7 @@ def create_model(
 	is_reasoning: bool,
 	supports_vision: bool,
 ) -> str:
-	"""Creates a new Otto LLM entry with the specified parameters.
+	"""Creates a new LLM Model entry with the specified parameters.
 
 	`provider_model_id` is the model id used by the provider. For reference:
 	- Anthropic: https://docs.anthropic.com/en/docs/about-claude/models/overview#model-names
@@ -110,14 +110,14 @@ def create_model(
 		Name of the created model in format "{provider_id}/{provider_model_id}"
 		eg: "gemini/gemini-2.5-flash", "anthropic/claude-sonnet-4-20250514"
 	"""
-	from otto.otto.doctype.otto_llm.otto_llm import OttoLLM
+	from llm.llm.doctype.llm_model.llm_model import LLMModel
 
 	provider_id = provider.lower()
 	if provider == "Google":
 		provider_id = "gemini"
 
 	name = f"{provider_id}/{provider_model_id}"
-	llm = OttoLLM.new(
+	llm = LLMModel.new(
 		name=name,
 		title=title,
 		provider=provider,
@@ -220,7 +220,7 @@ def get_models(
 	if supports_vision is not None:
 		filters["supports_vision"] = supports_vision
 
-	models = frappe.get_all("Otto LLM", filters=filters, pluck="name")
+	models = frappe.get_all("LLM Model", filters=filters, pluck="name")
 	if provider:
 		return models
 

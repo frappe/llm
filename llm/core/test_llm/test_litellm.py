@@ -1,16 +1,16 @@
 import unittest
 
-from otto.llm.litellm import interact
-from otto.llm.test_llm.utils import (
+from llm.core.litellm import interact
+from llm.core.test_llm.utils import (
 	TEST_MODEL,
 	get_testfile_path,
 	get_weather_tool,
 	print_stats,
 	skip_unless_can_run_llm_tests,
 )
-from otto.llm.types import ToolUseUpdate
-from otto.llm.utils import get_stats, to_content, update_tool_use
-from otto.utils import drain
+from llm.core.types import ToolUseUpdate
+from llm.core.utils import get_stats, to_content, update_tool_use
+from llm.internal.utils import drain
 
 
 #  Skip if not explicitly enabled

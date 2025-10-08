@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-from otto.llm.types import (
+from llm.core.types import (
 	ID,
 	Content,
 	ContentChunk,
@@ -25,7 +25,7 @@ from otto.llm.types import (
 	ToolUseUpdate,
 	UserContent,
 )
-from otto.otto.doctype.otto_session.otto_session import InteractResponse
+from llm.llm.doctype.llm_session.llm_session import InteractResponse
 
 __all__ = [
 	"ID",
