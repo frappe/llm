@@ -1,8 +1,8 @@
 > [!NOTE]
 >
-> Work in progress, reference: [otto.lib](https://github.com/frappe/otto/blob/develop/otto/lib/docs/README.md)
+> Work in progress.
 
-### llm
+### Frappe LLM
 
 Auxiliary app that enables LLM features
 

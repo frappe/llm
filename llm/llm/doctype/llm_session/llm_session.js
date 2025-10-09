@@ -17,8 +17,5 @@ frappe.ui.form.on("LLM Session", {
 		}
 
 		frm.add_custom_button(__("View Stats"), get_stats);
-
-		// frm.add_web_link(`/otto_feedback?session=${frm.doc.name}`, __("Give Feedback"));
-		// frm.add_web_link(`/app/view-otto-session/${frm.doc.name}`, __("Open in Session Viewer"));
 	},
 });

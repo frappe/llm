@@ -1,12 +1,12 @@
-# Otto Lib
+# LLM
 
-Library for adding LLM capabilities into Frappe apps.
+Frappe application for adding LLM capabilities into other Frappe applications.
 
 > [!NOTE]
 >
-> Otto Lib is meant to be used specifically with Frappe apps. The library
-> features offered by Otto are backed by DocTypes and so cannot be provided as a
-> standalone library.
+> Frappe LLM is meant to be used specifically with Frappe apps. The features
+> offered are backed by DocTypes and so cannot be provided as a standalone
+> library.
 
 ## Index
 
@@ -32,13 +32,12 @@ If you're attempting to build LLM features into your Frappe app where:
 - The user is allowed to update system prompts or instructions to better fit their need
 - The user would like to track their LLM usage
 
-Then Otto Lib is a suitable library to use. This library exposes Otto's core LLM
+Then Frappe LLM is a suitable library to use. This library exposes Otto's core LLM
 functionality allowing you to build custom LLM features around it.
 
 Using this library allows Otto to manage:
 
 1. [Sessions](./session.md):
-
    - Manage state of turn based or one shot LLM interactions.
    - Keep track of all LLM interactions.
    - View stats and analytics across all LLM interactions.
@@ -49,12 +48,9 @@ Using this library allows Otto to manage:
    - Discover available models.
 
 The library is sufficiently typed, with definitions exported from
-[`otto.lib.types`](https://github.com/frappe/otto/blob/develop/otto/lib/types.py)
+[`llm.lib.types`](https://github.com/frappe/llm/blob/develop/llm/lib/types.py)
 and defined in
-[`otto.llm.types`](https://github.com/frappe/otto/blob/develop/otto/llm/types.py).
-
-Otto uses this library internally for it's application level features, for example
-[Otto Execution](https://github.com/frappe/otto/blob/develop/otto/otto/doctype/otto_execution/otto_execution.py).
+[`llm.core.types`](https://github.com/frappe/otto/blob/develop/otto/core/types.py).
 
 > [!WARNING]
 >
